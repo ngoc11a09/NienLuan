@@ -1,5 +1,8 @@
 'use client'
 import { useId } from 'react';
+import { transformInput } from '../helpers/convertInput';
+import { TSP } from '../algorithm/TSP';
+import { InputType } from '../types/InputType';
 
 export default function Form() {
     const inputAreaId = useId();
@@ -11,8 +14,14 @@ export default function Form() {
         const formData = new FormData(form);
 
         const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
+
+        const input: InputType = transformInput(formJson.data as string)
+
+        const tsp = new TSP(input.n, input.start, input.arr);
+        console.log('tsp:', tsp.solver());
+
     }
+
     return (
         <div>
             <form method="post" onSubmit={handleSubmit}>
@@ -34,6 +43,9 @@ export default function Form() {
                     <button type="submit">Save</button>
                 </div>
             </form>
+            <div>
+                <span>RES IS: { }</span>
+            </div>
         </div>
     );
 }
